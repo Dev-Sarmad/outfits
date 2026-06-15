@@ -1,0 +1,9 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+
+@layer base{
+    ::selection{
+        @apply bg-amber-500 text-white
+    }
+}
+@custom-variant dark (&:is(.dark *));
