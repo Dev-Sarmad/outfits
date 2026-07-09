@@ -1,6 +1,15 @@
-import mongoose from "mongoose";
-
-const userschema = new mongoose.Schema(
+import mongoose, { Types } from "mongoose";
+export interface IUser {
+  _id: Types.ObjectId;
+  name: string;
+  email: string;
+  password: string;
+  role: "admin" | "customer";
+  age?: number;
+  refreshToken?: string | null;
+  isVerified: boolean;
+}
+const userschema = new mongoose.Schema<IUser>(
   {
     name: {
       type: String,
@@ -22,7 +31,7 @@ const userschema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["admin", "customer"],
-      default: "customer",
+      default: "customer"
     },
     refreshToken: {
       type: String,
@@ -34,10 +43,10 @@ const userschema = new mongoose.Schema(
     },
     age: {
       type: Number,
-      optional: true,
+      required: false,
     },
   },
   { timestamps: true },
 );
 
-export const User = mongoose.model("User", userschema);
+export const User = mongoose.model<IUser>("User", userschema);
