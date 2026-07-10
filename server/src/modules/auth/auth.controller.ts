@@ -22,9 +22,13 @@ const login = async (
   next: NextFunction,
 ) => {
   try {
-    const user = await loginUserService(request.body);
-    console.log(user);
-    return response.json(new ApiResponse(200, "User Fetched", user));
+    const { accessToken, refreshToken, safeUser } = await loginUserService(
+      request.body,
+    );
+    return response
+      .cookie("accessToken", accessToken)
+      .cookie("refreshToken", refreshToken)
+      .json(new ApiResponse(200, "User Logged In", { accessToken, safeUser }));
   } catch (error) {
     next(error);
   }

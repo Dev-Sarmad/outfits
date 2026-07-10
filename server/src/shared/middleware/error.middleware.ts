@@ -13,11 +13,13 @@ export const errorHandler = (
       success: false,
       message: err.message,
       errors: err.error,
+      stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
     });
   }
 
   return res.status(500).json({
     success: false,
     message: "Something went wrong",
+    stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
   });
 };

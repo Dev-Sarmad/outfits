@@ -2,10 +2,17 @@ import jwt from "jsonwebtoken";
 import type { IUser } from "../modules/auth/auth.schema.ts";
 import { config } from "../config/config.ts";
 
-const generateToken = (user: IUser) => {
-  const token = jwt.sign({ _id: user._id }, config.JWT_SECRET, {expiresIn: config.JWT_EXPIRES_IN });
-  return token;
-  
+const generateAccessAndRefreshToken = async  (user: IUser) => {
+  const refreshToken = jwt.sign({ _id: user._id, role: user.role }, config.REFRESH_TOKEN_SECRET, {
+    expiresIn: config.REFRESH_EXPIRES_IN,
+  });
+  user.refreshToken = refreshToken;
+  await user.save();
+  const accessToken = jwt.sign({ _id: user._id }, config.ACCESS_TOKEN_SECRET, {
+    expiresIn: config.ACCESS_EXPIRES_IN,
+  });
+
+  return { accessToken, refreshToken };
 };
 
-export { generateToken };
+export { generateAccessAndRefreshToken };

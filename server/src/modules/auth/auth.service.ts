@@ -2,7 +2,7 @@ import { findUserByEmail, registerUser } from "./auth.repository.ts";
 import { comparePassword, hashPassword } from "../../utils/hash.ts";
 import type { LoginUserInput, RegisterUserInput } from "./auth.validation.ts";
 import { ApiError } from "../../shared/errors/ApiError.ts";
-import { generateToken } from "../../utils/jwt.ts";
+import { generateAccessAndRefreshToken } from "../../utils/jwt.ts";
 
 export const registerUserService = async (data: RegisterUserInput) => {
   const existingUser = await findUserByEmail(data.email);
@@ -28,9 +28,9 @@ export const loginUserService = async (data: LoginUserInput) => {
   if (!isPasswordValid) {
     throw new ApiError(401, "Invalid credentials", ["Password is incorrect"]);
   }
-  const token = generateToken(user);
+  const { accessToken , refreshToken} = await generateAccessAndRefreshToken(user);
 
-  const { password, ...safeUser } = user.toObject();
+  const { password, refreshToken:_, ...safeUser } = user.toObject();
 
-  return { token, safeUser };
+  return { accessToken, refreshToken, safeUser };
 };
