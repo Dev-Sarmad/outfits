@@ -1,4 +1,9 @@
-import { findUserByEmail, registerUser } from "./auth.repository.ts";
+import {
+  clearRefreshToken,
+  findUserByEmail,
+  findUserById,
+  registerUser,
+} from "./auth.repository.ts";
 import { comparePassword, hashPassword } from "../../utils/hash.ts";
 import type { LoginUserInput, RegisterUserInput } from "./auth.validation.ts";
 import { ApiError } from "../../shared/errors/ApiError.ts";
@@ -6,9 +11,9 @@ import { generateAccessAndRefreshToken } from "../../utils/jwt.ts";
 export const registerUserService = async (data: RegisterUserInput) => {
   const existingUser = await findUserByEmail(data.email);
   if (existingUser) {
-    throw new ApiError(409, "User registration falied", [
+    throw new ApiError(409, "User registration falied", 
       "A user with this email already exists",
-    ]);
+    );
   }
   data.password = await hashPassword(data.password);
 
@@ -19,13 +24,13 @@ export const registerUserService = async (data: RegisterUserInput) => {
 export const loginUserService = async (data: LoginUserInput) => {
   const user = await findUserByEmail(data.email);
   if (!user) {
-    throw new ApiError(404, "User not found", [
+    throw new ApiError(404, "User not found", 
       "User with this email not found",
-    ]);
+    );
   }
   const isPasswordValid = await comparePassword(data.password, user.password);
   if (!isPasswordValid) {
-    throw new ApiError(401, "Invalid credentials", ["Password is incorrect"]);
+    throw new ApiError(401, "Invalid credentials", "Password is incorrect");
   }
   const { accessToken, refreshToken } =
     await generateAccessAndRefreshToken(user);
@@ -35,8 +40,6 @@ export const loginUserService = async (data: LoginUserInput) => {
   return { accessToken, refreshToken, safeUser };
 };
 
-export const logoutService = async (token?: string) => {
-  if (!token) {
-    throw new ApiError(401, "Unauthorized", ["Token is missing or expired"]);
-  }
+export const logoutService = async (userId: string) => {
+  await clearRefreshToken(userId)
 };

@@ -5,6 +5,7 @@ import {
   registerUserService,
 } from "./auth.service.ts";
 import { ApiResponse } from "../../shared/responses/ApiResponse.ts";
+import { ApiError } from "../../shared/errors/ApiError.ts";
 const register = async (
   request: Request,
   response: Response,
@@ -52,17 +53,41 @@ const logout = async (
   next: NextFunction,
 ) => {
   try {
-    await logoutService(request.cookies.accessToken);
+    const userId = request.user?._id.toString();
+    if(!userId){
+      throw new ApiError(404, "Unauthorozed", "You need to log in first.")
+    }
+    await logoutService(userId);
     response.clearCookie("accessToken", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "lax",
     });
-    return new ApiResponse(200, "logout successfull", {
-      message: "User successfully looggedout",
+    response.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
     });
+    return response.json(
+      new ApiResponse(200, "logout successfull", {
+        message: "User successfully looggedout",
+      }),
+    );
   } catch (error) {
     next(error);
   }
 };
-export { register, login, logout };
+
+const authcheck = async (
+  request: Request,
+  response: Response,
+  next: NextFunction,
+) => {
+  try {
+    console.log(request.user)
+    return response.json(new ApiResponse(200, "Authenticated", request.user));
+  } catch (error) {
+    next(error);
+  }
+};
+export { register, login, logout, authcheck };

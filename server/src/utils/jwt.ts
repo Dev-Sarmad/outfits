@@ -1,14 +1,15 @@
 import jwt from "jsonwebtoken";
 import type { IUser } from "../modules/auth/auth.schema.ts";
 import { config } from "../config/config.ts";
-
-const generateAccessAndRefreshToken = async  (user: IUser) => {
-  const refreshToken = jwt.sign({ _id: user._id, role: user.role }, config.REFRESH_TOKEN_SECRET, {
+import type { HydratedDocument } from "mongoose";
+type UserDocument =  HydratedDocument<IUser>;
+const generateAccessAndRefreshToken = async  (user: UserDocument) => {
+  const refreshToken = jwt.sign({ userId: user._id.toString(), role: user.role }, config.REFRESH_TOKEN_SECRET, {
     expiresIn: config.REFRESH_EXPIRES_IN,
   });
   user.refreshToken = refreshToken;
   await user.save();
-  const accessToken = jwt.sign({ _id: user._id }, config.ACCESS_TOKEN_SECRET, {
+  const accessToken = jwt.sign({ userId: user._id.toString(), role: user.role }, config.ACCESS_TOKEN_SECRET, {
     expiresIn: config.ACCESS_EXPIRES_IN,
   });
 

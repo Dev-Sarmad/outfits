@@ -6,11 +6,17 @@ const findUserByEmail = async (email: string) => {
 };
 
 const findUserById = async (id: string) => {
-  return await User.findById(id);
+  return await User.findById(id).select("-password").lean();
 };
+
+const clearRefreshToken =async(id:string)=>{
+  await User.findByIdAndUpdate(id, {
+    refreshToken:null
+  })
+}
 
 const registerUser = async (data:RegisterUserInput) => {
     return await User.create(data);
 };
 
-export { findUserByEmail, findUserById, registerUser };
+export { findUserByEmail, findUserById, registerUser,clearRefreshToken };

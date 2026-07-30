@@ -4,7 +4,8 @@ import jwt from "jsonwebtoken";
 import { config } from "../../config/config.ts";
 import { findUserById } from "../../modules/auth/auth.repository.ts";
 interface JwtPayload {
-  _id: string;
+  userId: string;
+  role:"admin"|"customer"
 }
 export const authentication = async (
   request: Request,
@@ -16,17 +17,17 @@ export const authentication = async (
       request.cookies?.accessToken ||
       request.headers.authorization?.replace("Bearer ", "");
     if (!accessToken) {
-      throw new ApiError(404, "Token is missing or expired", [
+      throw new ApiError(404, "Token is missing or expired", 
         "Authentication token is missing",
-      ]);
+      );
     }
     const decoded = jwt.verify(
       accessToken,
       config.ACCESS_TOKEN_SECRET,
     ) as JwtPayload;
-    const user = await findUserById(decoded._id);
+    const user = await findUserById(decoded.userId);
     if (!user) {
-      throw new ApiError(401, "Unauthorized", ["Un expected token"]);
+      throw new ApiError(401, "Unauthorized", "Un expected token");
     }
 
     request.user = user;
