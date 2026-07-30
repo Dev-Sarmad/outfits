@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "@heroui/react";
 import clsx from "clsx";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { Logo } from "@/components/icons";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const shutterRef = useRef(null);
+  const { isAuthenticated, Logout, user, token, status } = useAuth();
 
   return (
     <nav className="sticky top-0 z-40 w-full  border-separator bg-transparent">
@@ -46,7 +49,9 @@ export const Navbar = () => {
             aria-expanded={isMenuOpen}
             aria-label="Toggle menu"
             className="p-2"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            onClick={() => {
+              setIsMenuOpen(!isMenuOpen);
+            }}
           >
             <svg
               className="h-6 w-6"
@@ -75,7 +80,7 @@ export const Navbar = () => {
       </header>
 
       {isMenuOpen && (
-        <div className="border-t border-separator sm:hidden">
+        <div ref={shutterRef} className="border-t border-separator sm:hidden">
           <ul className="flex flex-col gap-2 px-4 pb-4">
             {siteConfig.navMenuItems.map((item, index) => (
               <li key={`${item.label}-${index}`}>

@@ -1,6 +1,9 @@
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import DefaultLayout from "@/layouts/default";
 
 export default function IndexPage() {
+  const { user } = useAuth();
+
   return (
     <DefaultLayout>
       <div className="flex items-center justify-center overflow-hidden relative">
@@ -27,6 +30,7 @@ export default function IndexPage() {
         <div className="md:mb-20 font-semibold"> Shipping & Returns</div>
 
         <div className="md:mb-20 font-semibold">© 2026</div>
+        {user?.name}
       </footer>
     </DefaultLayout>
   );

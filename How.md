@@ -68,3 +68,10 @@ TypeError: Cannot read property 'name' of undefined
 - schema based validation using the zod where we create schema register and login schemas in auth.validation.ts 
 
 - create a middleware 
+
+# Auth Check endpoint 
+- The function of this is to check weather the user is authenticated or not quite usefull for the frontend of the application we hit the api from frontend when the client app load first. 
+
+- If the user is authenticated means the frontend have the tokens we just have to send those tokens to the backend which varified by the middleware if the token verified then we will get the actual user object in the response.
+
+- The problem it solve it is when i loggedin using the redux toolkit as soon as i refresh the page the state vanished because redux manage state in browsers javascript memory. So to tackle that we have to build a function at the top of your application each time it sends the request when you are doing something.
