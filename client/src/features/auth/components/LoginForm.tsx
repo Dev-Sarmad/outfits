@@ -1,26 +1,29 @@
 import { Button, Input, Card } from "@heroui/react";
-import { FormEvent, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-import { loginUser } from "../authThunk";
-import { AppDispatch } from "../../../../store/store";
+import useLogin from "../hooks/useLogin";
 export default function LoginForm() {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
-  const handleLogin = async (e: FormEvent) => {
-    e.preventDefault();
-    await dispatch(
-      loginUser({
-        email,
-        password,
-      }),
-    );
+  const { handleLogin, handleSubmit, errors, register, status } = useLogin();
+  // const {
+  //   register,
+  //   reset,
+  //   formState: { errors },
+  //   handleSubmit,
+  // } = useForm<loginFormData>({
+  //   resolver: zodResolver(loginSchema),
+  // });
 
-    navigate("/");
-  };
+  // const navigate = useNavigate();
+  // const dispatch = useDispatch<AppDispatch>();
+  // const handleLogin = async (data: loginFormData) => {
+  //   try {
+  //     await dispatch(loginUser(data));
+  //     reset();
+  //     navigate("/");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
@@ -35,27 +38,38 @@ export default function LoginForm() {
           </div>
 
           {/* Login Form */}
-          <form className="space-y-4 space-x-2" onSubmit={handleLogin}>
+          <form
+            className="space-y-4 space-x-2"
+            onSubmit={handleSubmit(handleLogin)}
+          >
             <Input
               isRequired
               label="Email"
               placeholder="Enter your email"
               type="email"
-              value={email}
               variants="bordered"
-              onChange={(e) => setEmail(e.target.value)}
+              {...register("email")}
+              errorMessage={errors.email?.message}
+              isInvalid={!!errors.email}
             />
 
             <Input
               isRequired
+              isInvalid={!!errors.password}
               label="Password"
               placeholder="Enter your password"
               type="password"
-              value={password}
               variants="bordered"
-              onChange={(e) => setPassword(e.target.value)}
+              {...register("password")}
+              errorMessage={errors.password?.message}
+              isInvalid={!!errors.password}
             />
-            <Button fullWidth color="primary" size="lg" type="submit">
+            <Button
+              fullWidth
+              isDisabled={status === "loading"}
+              size="lg"
+              type="submit"
+            >
               Sign In
             </Button>
           </form>
