@@ -6,10 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { loginFormData, loginSchema } from "../validation/authValidationSchema";
 import { AppDispatch } from "../../../../store/store";
 import { loginUser } from "../authThunk";
+
 import { useAuth } from "./useAuth";
 
 const useLogin = () => {
-    const {status}= useAuth()
+  const { status } = useAuth();
   const navigate = useNavigate();
   const {
     register,
@@ -18,6 +19,7 @@ const useLogin = () => {
     formState: { errors },
   } = useForm<loginFormData>({
     resolver: zodResolver(loginSchema),
+    mode: "onTouched",
   });
   const dispatch = useDispatch<AppDispatch>();
   const handleLogin = async (data: loginFormData) => {

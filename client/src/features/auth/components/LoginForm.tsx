@@ -1,4 +1,4 @@
-import { Button, Input, Card } from "@heroui/react";
+import { Button, Input, Card, ErrorMessage } from "@heroui/react";
 import { Link } from "react-router-dom";
 
 import useLogin from "../hooks/useLogin";
@@ -49,9 +49,10 @@ export default function LoginForm() {
               type="email"
               variants="bordered"
               {...register("email")}
-              errorMessage={errors.email?.message}
-              isInvalid={!!errors.email}
             />
+            {errors.email && (
+              <ErrorMessage>{errors.email.message}</ErrorMessage>
+            )}
 
             <Input
               isRequired
@@ -61,9 +62,10 @@ export default function LoginForm() {
               type="password"
               variants="bordered"
               {...register("password")}
-              errorMessage={errors.password?.message}
-              isInvalid={!!errors.password}
             />
+            {errors.password && (
+              <ErrorMessage>{errors.password.message}</ErrorMessage>
+            )}
             <Button
               fullWidth
               isDisabled={status === "loading"}

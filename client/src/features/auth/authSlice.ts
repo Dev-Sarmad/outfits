@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { authCheckUser, loginUser } from "./authThunk";
+import { authCheckUser, loginUser, signUpUser } from "./authThunk";
 import { User } from "./api/authApi";
 
 interface AuthState {
@@ -61,6 +61,18 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
         state.error = action.payload;
         (state.status = "failed"), (state.user = null);
+      })
+
+      .addCase(signUpUser.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(signUpUser.fulfilled, (state) => {
+        state.status = "success";
+      })
+      .addCase(signUpUser.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
       });
   },
 });

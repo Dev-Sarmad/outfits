@@ -1,7 +1,11 @@
 import axios from "axios";
 
 import { loginFormData } from "../validation/authValidationSchema";
-
+export interface SignUpPayload {
+  name: string;
+  email: string;
+  password: string;
+}
 export interface User {
   _id: string;
   name: string;
@@ -20,7 +24,14 @@ export const LoginApi = async (credentials: loginFormData): Promise<User> => {
 
   return data;
 };
+export const signUpApi = async (credentials: SignUpPayload) => {
+  const { data } = await axios.post(
+    "http://localhost:8000/api/auth/register",
+    credentials,
+  );
 
+  return data;
+};
 export const authCheckApi = async () => {
   const authCheck = await axios.get("http://localhost:8000/api/auth/me", {
     withCredentials: true,
