@@ -1,6 +1,10 @@
-import { Button, Input, Card } from "@heroui/react";
+import { Button, Input, Card, ErrorMessage } from "@heroui/react";
 import { Link } from "react-router-dom";
+
+import useSignUp from "../hooks/useSignUp";
 export default function SignUpForm() {
+  const { handleSignUp, errors, register, handleSubmit } = useSignUp();
+
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-md rounded-2xl p-8 shadow-lg">
@@ -14,21 +18,32 @@ export default function SignUpForm() {
           </div>
 
           {/* Login Form */}
-          <form className="space-y-4 space-x-2">
+          <form
+            className="space-y-4 space-x-2"
+            onSubmit={handleSubmit(handleSignUp)}
+          >
             <Input
               isRequired
               label="Name"
               placeholder="Enter your name"
               type="text"
               variant="bordered"
+              {...register("name")}
+              isInvalid={!!errors.name}
             />
+            {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
             <Input
               isRequired
               label="Email"
               placeholder="Enter your email"
               type="email"
               variant="bordered"
+              {...register("email")}
+              isInvalid={!!errors.email}
             />
+            {errors.email && (
+              <ErrorMessage>{errors.email.message}</ErrorMessage>
+            )}
 
             <Input
               isRequired
@@ -36,8 +51,13 @@ export default function SignUpForm() {
               placeholder="Enter your password"
               type="password"
               variant="bordered"
+              {...register("password")}
+              isInvalid={!!errors.password}
             />
-            <Button fullWidth color="primary" size="lg" type="submit">
+            {errors.password && (
+              <ErrorMessage>{errors.password.message}</ErrorMessage>
+            )}
+            <Button fullWidth size="lg" type="submit">
               Sign Up
             </Button>
           </form>
