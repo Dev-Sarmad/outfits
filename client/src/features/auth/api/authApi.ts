@@ -24,8 +24,8 @@ export const LoginApi = async (credentials: loginFormData): Promise<User> => {
 
   return data;
 };
-export const signUpApi = async (credentials: SignUpPayload) => {
-  const { data } = await axios.post(
+export const signUpApi = async (credentials: SignUpPayload):Promise<User> => {
+  const { data } = await axios.post<User>(
     "http://localhost:8000/api/auth/register",
     credentials,
   );

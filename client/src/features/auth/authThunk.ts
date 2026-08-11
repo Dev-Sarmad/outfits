@@ -22,14 +22,16 @@ export const loginUser = createAsyncThunk<
 });
 
 export const signUpUser = createAsyncThunk<
-  void,
+  User,
   SignUpPayload,
   { rejectValue: any }
 >("auth/signup", async (credentials, thunkApi) => {
   try {
-    return await signUpApi(credentials);
-  } catch (error) {
-    return thunkApi.rejectWithValue(error);
+    const data = await signUpApi(credentials);
+
+    return data;
+  } catch (error: any) {
+    return thunkApi.rejectWithValue(error.response?.data || error.message);
   }
 });
 

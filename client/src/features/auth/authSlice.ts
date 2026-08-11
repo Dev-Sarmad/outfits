@@ -66,9 +66,12 @@ const authSlice = createSlice({
       .addCase(signUpUser.pending, (state) => {
         state.status = "loading";
         state.error = null;
+        state.user = null
       })
-      .addCase(signUpUser.fulfilled, (state) => {
+      .addCase(signUpUser.fulfilled, (state, action) => {
         state.status = "success";
+        state.error =null;
+        state.user = action.payload;
       })
       .addCase(signUpUser.rejected, (state, action) => {
         state.status = "failed";

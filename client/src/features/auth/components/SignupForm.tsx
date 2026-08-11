@@ -2,6 +2,7 @@ import { Button, Input, Card, ErrorMessage } from "@heroui/react";
 import { Link } from "react-router-dom";
 
 import useSignUp from "../hooks/useSignUp";
+
 export default function SignUpForm() {
   const { handleSignUp, errors, register, handleSubmit } = useSignUp();
 
@@ -12,16 +13,20 @@ export default function SignUpForm() {
           {/* Header */}
           <div className="space-y-2 text-center">
             <h1 className="text-3xl font-bold">Welcome Outfits</h1>
+
             <p className="text-sm text-default-500">
               Sign Up to continue to your account.
             </p>
           </div>
 
-          {/* Login Form */}
+          {/* Signup Form */}
           <form
-            className="space-y-4 space-x-2"
-            onSubmit={handleSubmit(handleSignUp)}
+            className="space-y-4"
+            onSubmit={handleSubmit(handleSignUp, (errors) => {
+              console.log("FORM VALIDATION ERRORS:", errors);
+            })}
           >
+            {/* Name */}
             <Input
               isRequired
               label="Name"
@@ -31,7 +36,10 @@ export default function SignUpForm() {
               {...register("name")}
               isInvalid={!!errors.name}
             />
+
             {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+
+            {/* Email */}
             <Input
               isRequired
               label="Email"
@@ -41,10 +49,12 @@ export default function SignUpForm() {
               {...register("email")}
               isInvalid={!!errors.email}
             />
+
             {errors.email && (
               <ErrorMessage>{errors.email.message}</ErrorMessage>
             )}
 
+            {/* Password */}
             <Input
               isRequired
               label="Password"
@@ -54,9 +64,27 @@ export default function SignUpForm() {
               {...register("password")}
               isInvalid={!!errors.password}
             />
+
             {errors.password && (
               <ErrorMessage>{errors.password.message}</ErrorMessage>
             )}
+
+            {/* Confirm Password */}
+            <Input
+              isRequired
+              label="Confirm Password"
+              placeholder="Confirm your password"
+              type="password"
+              variant="bordered"
+              {...register("confirmPassword")}
+              isInvalid={!!errors.confirmPassword}
+            />
+
+            {errors.confirmPassword && (
+              <ErrorMessage>{errors.confirmPassword.message}</ErrorMessage>
+            )}
+
+            {/* Submit */}
             <Button fullWidth size="lg" type="submit">
               Sign Up
             </Button>
@@ -64,10 +92,7 @@ export default function SignUpForm() {
 
           {/* Footer */}
           <p className="text-center text-sm text-default-500">
-            Already have an account?{" "}
-            <Link color="primary" to="/login">
-              Login Account
-            </Link>
+            Already have an account? <Link to="/login">Login Account</Link>
           </p>
         </div>
       </Card>
