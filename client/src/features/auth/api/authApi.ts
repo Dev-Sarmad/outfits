@@ -39,3 +39,8 @@ export const authCheckApi = async () => {
 
   return authCheck.data;
 };
+export const logoutApi = async () => {
+  await axios.post("http://localhost:8000/api/auth/logout", null, {
+    withCredentials: true,
+  });
+};

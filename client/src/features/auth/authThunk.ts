@@ -6,6 +6,7 @@ import {
   signUpApi,
   User,
   SignUpPayload,
+  logoutApi,
 } from "./api/authApi";
 import { loginFormData } from "./validation/authValidationSchema";
 export const loginUser = createAsyncThunk<
@@ -37,6 +38,17 @@ export const authCheckUser = createAsyncThunk(
   async (_, thunkApi) => {
     try {
       return await authCheckApi();
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
+export const logoutUser = createAsyncThunk(
+  "auth/logout",
+  async (_, thunkApi) => {
+    try {
+      await logoutApi();
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }

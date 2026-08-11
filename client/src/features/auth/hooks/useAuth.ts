@@ -6,7 +6,7 @@ import {
   selectStatus,
 } from "../authSelector";
 import { AppDispatch } from "../../../../store/store";
-import { logout } from "../authSlice";
+import { logoutUser } from "../authThunk";
 
 export function useAuth() {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,8 +14,8 @@ export function useAuth() {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const status = useSelector(selectStatus);
 
-  function Logout() {
-    dispatch(logout());
+  async function Logout() {
+    await dispatch(logoutUser());
   }
 
   return { user, isAuthenticated, status, Logout };
