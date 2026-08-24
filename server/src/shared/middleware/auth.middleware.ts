@@ -5,7 +5,7 @@ import { config } from "../../config/config.ts";
 import { findUserById } from "../../modules/auth/auth.repository.ts";
 interface JwtPayload {
   userId: string;
-  role:"admin"|"customer"
+  role: "admin" | "customer";
 }
 export const authentication = async (
   request: Request,
@@ -17,7 +17,9 @@ export const authentication = async (
       request.cookies?.accessToken ||
       request.headers.authorization?.replace("Bearer ", "");
     if (!accessToken) {
-      throw new ApiError(404, "Token is missing or expired", 
+      throw new ApiError(
+        404,
+        "Token is missing or expired",
         "Authentication token is missing",
       );
     }
@@ -35,4 +37,13 @@ export const authentication = async (
   } catch (error) {
     next(error);
   }
+};
+
+export const authorization = (role: string) => {
+  return (request: Request, response: Response, next: NextFunction) => {
+    if (request.user?.role !== "admin" && request.user?.role !== role) {
+      return next(new ApiError(403, "Forbidden", "Insufficient permissions"));
+    }
+    next();
+  };
 };

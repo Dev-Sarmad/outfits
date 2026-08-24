@@ -55,7 +55,7 @@ const logout = async (
   try {
     const userId = request.user?._id.toString();
     if(!userId){
-      throw new ApiError(404, "Unauthorozed", "You need to log in first.")
+      throw new ApiError(404, "Unauthorized", "You need to log in first.")
     }
     await logoutService(userId);
     response.clearCookie("accessToken", {
