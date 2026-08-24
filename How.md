@@ -77,3 +77,32 @@ TypeError: Cannot read property 'name' of undefined
 - The problem it solve it is when i loggedin using the redux toolkit as soon as i refresh the page the state vanished because redux manage state in browsers javascript memory. So to tackle that we have to build a function at the top of your application each time it sends the request when rendering Provider component.
 
 - When we are doing more than just fetching the data use the createAsyncThunk handle the response state or error in extra reducers because the action creator and action are not in a local reducers these are managed by the thunk when dispatched.
+
+# The admin Product enpoints 
+
+## Create a product 
+When the admin hit he route /api/product the request is first checked weather the user is authenticated or not after the the role of the authenticated user is checked if its is not a user then throw error of insufficient permissions. 
+```bash
+
+productRouter.post(
+  "/",
+  authentication,
+  authorization("admin"),
+  validate(createProductSchema),
+  createProduct,
+);
+
+```
+If all gone right then validate the create product payload using a validation middleware in which we pass the createProductSchema which the admin pass after validation the request is headed towards the controller. The controller handshake the createProductService which perform the database operations by the db layer of the product resource i.e product.repository.ts which is reponsible for the database operations.
+
+The createProductService takes the payload and user which admin is creating a product.
+```bash 
+const product = await createProductService(request.body, request.user!._id); 
+```
+The admin which creates a product does'nt be passed via client it is passes in a request and at the time of creating a product it is provided which user created it where we extends the createProductInput so that it matched with schema.
+```bash
+interface CreateProductRepositoryInput
+  extends CreateProductInput {
+  createdBy: mongoose.Types.ObjectId;
+}
+```
