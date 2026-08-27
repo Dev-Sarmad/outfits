@@ -106,3 +106,21 @@ interface CreateProductRepositoryInput
   createdBy: mongoose.Types.ObjectId;
 }
 ```
+# File upload using Cloudinary Multer 
+
+## Multer Middleware
+We handle the file uploads inside the nodejs application using multer it creates the middleware and configure how uploads are handled.
+
+Inside the multer we have an object called diskStorage which tells how the files are saved inside the server. It provide the destination, filename functions for it each function accept three parameter req, file, callback function. The request object, file is for the metadata of file and cb which multer calls for every upload file and wait so that it can have a file name , destination at a runtime. Basically Multer calls this function and waits for you to tell it what the filename, destination should be. It have error and value arguments. 
+
+path.extname(file.originalname)) it returns the file extension with . from uploaded file. 
+
+File filter is a method which checks the file type allowance weather to upload or not by checking file.mimetype.startsWith("image/") as the all images contains it.
+
+# Config the Cloudinary and create a utility function uploadToCloudinary
+
+The controller recieves the files in a request which have a type express.multer.file
+it passes that to the service which responsible for a product creation.
+
+const imageUrls = await Promise.all(images.map(uploadToCloudinary)); once all files are uploaded on cloudinary then create a product via repo layer  but first we also have to change a little bit in the schema service and create product input as we are not adding validation on images fields.
+

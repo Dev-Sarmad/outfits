@@ -4,6 +4,11 @@ import { ZodType } from "zod";
 
 export const validate = (schema: ZodType) => {
   return (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body);
+    console.log(req.body.price);
+    console.log(typeof req.body.price);
+    console.log(req.body.stock);
+    console.log(typeof req.body.stock);
     const result = schema.safeParse(req.body);
 
     if (!result.success) {

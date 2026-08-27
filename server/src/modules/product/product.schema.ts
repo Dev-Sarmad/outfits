@@ -1,15 +1,20 @@
 import mongoose from "mongoose";
 
+export interface ProductImage {
+  url: string;
+  publicId: string;
+}
+
 export interface IProduct {
   title: string;
   description: string;
   price: number;
   stock: number;
-  images: string[];
+
+  images: ProductImage[];
+
   createdBy: mongoose.Types.ObjectId;
 }
-
-
 const productSchema = new mongoose.Schema<IProduct>(
   {
     title: {
@@ -25,17 +30,26 @@ const productSchema = new mongoose.Schema<IProduct>(
     price: {
       type: Number,
       required: true,
-      min:0
+      min: 0,
     },
     stock: {
       type: Number,
       required: true,
-      min:0
+      min: 0,
     },
-    images: {
-      type: [String],
-      required:true,
-    },
+    images: [
+      {
+        url: {
+          type: String,
+          required: true,
+        },
+
+        publicId: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
