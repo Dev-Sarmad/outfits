@@ -1,12 +1,9 @@
-import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 
-import { RootState } from "../../store/store";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 function Protected() {
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated,
-  );
+  const { isAuthenticated } = useAuth();
 
   return isAuthenticated ? <Outlet /> : <Navigate to={"/login"} />;
 }

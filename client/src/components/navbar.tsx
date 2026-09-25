@@ -3,7 +3,7 @@ import { Link } from "@heroui/react";
 import clsx from "clsx";
 
 import { siteConfig } from "@/config/site";
-import { ThemeSwitch } from "@/components/theme-switch";
+import { ThemeSwitch } from "../../theme-switch";
 import { Logo } from "@/components/icons";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 
@@ -30,7 +30,7 @@ export const Navbar = () => {
   const isLoading = status === "loading";
 
   return (
-    <nav className="sticky top-0 z-40 w-full border-separator bg-transparent">
+    <nav className="fixed top-0 z-40 w-full border-separator bg-transparent">
       <header className="mx-auto flex min-h-16 w-full max-w-[1280px] items-center justify-between gap-4 px-4 sm:px-6">
         {/* Logo */}
         <div className="flex shrink-0 items-center">
@@ -55,9 +55,7 @@ export const Navbar = () => {
 
           {/* Authentication */}
           {isLoading ? (
-            <span className="text-sm text-default-500">
-              Checking...
-            </span>
+            <span className="text-sm text-default-500">Checking...</span>
           ) : isAuthenticated ? (
             <div className="flex items-center gap-3">
               <div className="flex max-w-[180px] items-center gap-2">
@@ -65,9 +63,7 @@ export const Navbar = () => {
                   {userName?.charAt(0).toUpperCase()}
                 </span>
 
-                <span className="truncate text-sm font-medium">
-                  {userName}
-                </span>
+                <span className="truncate text-sm font-medium">{userName}</span>
 
                 <span
                   className="h-2 w-2 rounded-full bg-success"
@@ -97,11 +93,7 @@ export const Navbar = () => {
 
         {/* Mobile controls */}
         <div className="flex items-center gap-2 sm:hidden">
-          <Link
-            aria-label="Bag"
-            className="text-base font-medium"
-            href="/bag"
-          >
+          <Link aria-label="Bag" className="text-base font-medium" href="/bag">
             Bag (0)
           </Link>
 
@@ -172,9 +164,7 @@ export const Navbar = () => {
                       <div className="flex items-center gap-1.5">
                         <span className="h-2 w-2 rounded-full bg-success" />
 
-                        <span className="text-xs text-success">
-                          Logged in
-                        </span>
+                        <span className="text-xs text-success">Logged in</span>
                       </div>
                     </div>
                   </div>
@@ -190,9 +180,7 @@ export const Navbar = () => {
               ) : (
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-sm font-semibold">
-                      You are logged out
-                    </p>
+                    <p className="text-sm font-semibold">You are logged out</p>
 
                     <p className="text-xs text-default-500">
                       Login to access your account
