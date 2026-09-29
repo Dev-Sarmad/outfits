@@ -21,7 +21,7 @@ export const LoginApi = async (credentials: loginFormData): Promise<User> => {
     { withCredentials: true },
   );
   const data = response.data;
-
+  
   return data;
 };
 export const signUpApi = async (credentials: SignUpPayload):Promise<User> => {

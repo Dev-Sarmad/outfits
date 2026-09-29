@@ -124,3 +124,10 @@ it passes that to the service which responsible for a product creation.
 
 const imageUrls = await Promise.all(images.map(uploadToCloudinary)); once all files are uploaded on cloudinary then create a product via repo layer  but first we also have to change a little bit in the schema service and create product input as we are not adding validation on images fields.
 
+# Integrate RTK Query inside the frontend app
+First createApi slice for all of your server side requests from the application.
+We config the name of the api, baseUrl and the endpoints asscocitated with it.
+
+The slice is created now connect it with the redux store. Register the baseApi in the store and rtk middleware which acts a delivery truck to dispatch the network requests, check the cache expiry,refetch or is it a component making request data is already cached or not ?
+
+Now inject the specific endpoints for orders, products etc in a seprate feature api file. 

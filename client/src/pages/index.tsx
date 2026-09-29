@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import DefaultLayout from "@/layouts/default";
 import { SplitText, useGSAP, gsap } from "@/lib/gsap";
+import ProductPages from "@/features/products/pages/ProductPages";
 export default function IndexPage() {
   const { user } = useAuth();
   const preLoadImgInitRotations = [7.5, -2.5, -10, 12.5, -5, 5];
@@ -222,6 +223,7 @@ export default function IndexPage() {
         <div className="md:mb-20 font-semibold">© 2026</div>
         {user?.name}
       </footer>
+      <ProductPages />
     </DefaultLayout>
   );
 }

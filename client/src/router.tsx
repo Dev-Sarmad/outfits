@@ -6,12 +6,18 @@ import PricingPage from "./pages/pricing";
 import AboutPage from "./pages/about";
 import LoginPage from "./features/auth/pages/LoginPage";
 import SignUpPage from "./features/auth/pages/SIgnUpPage";
+import ProductDetails from "./features/products/pages/ProductDetails";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <IndexPage />,
   },
+  {
+    path: "/product/:id",
+    element: <ProductDetails />,
+  },
+
   {
     path: "/bag",
     element: <BagPage />,
