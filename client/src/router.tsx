@@ -8,6 +8,14 @@ import LoginPage from "./features/auth/pages/LoginPage";
 import SignUpPage from "./features/auth/pages/SIgnUpPage";
 import ProductDetails from "./features/products/pages/ProductDetails";
 
+import DashboardPage from "@/admin/dashboard/pages/DashboardPage";
+import {
+  AdminCreateProduct,
+  AdminEditProduct,
+  AdminLayout,
+  AdminRoute,
+} from "@/admin/products/index";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -37,6 +45,35 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUpPage />,
+  },
+  {
+    element: <AdminRoute />,
+    children: [
+      {
+        path: "/admin",
+        element: <AdminLayout />,
+        children: [
+          {
+            index: true,
+            element: <DashboardPage />,
+          },
+          {
+            path: "products",
+            element: <AdminCreateProduct />,
+          },
+
+          {
+            path: "products/new",
+            element: <AdminCreateProduct />,
+          },
+
+          {
+            path: "products/:id/edit",
+            element: <AdminEditProduct />,
+          },
+        ],
+      },
+    ],
   },
 ]);
 

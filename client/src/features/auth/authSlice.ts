@@ -7,12 +7,14 @@ interface AuthState {
   user: User | null;
   status: "idle" | "loading" | "success" | "failed";
   isAuthenticated: boolean;
+  authInitialized: boolean;
   error: any | null;
 }
 const initialState: AuthState = {
   user: null,
   status: "idle",
   isAuthenticated: false,
+  authInitialized: false,
   error: null,
 };
 const authSlice = createSlice({
@@ -49,16 +51,19 @@ const authSlice = createSlice({
       })
       .addCase(authCheckUser.pending, (state) => {
         state.isAuthenticated = false;
+        state.authInitialized = false;
         state.error = null;
         (state.status = "loading"), (state.user = null);
       })
       .addCase(authCheckUser.fulfilled, (state, action) => {
         state.isAuthenticated = true;
+        state.authInitialized = true;
         state.error = null;
         (state.status = "success"), (state.user = action.payload);
       })
       .addCase(authCheckUser.rejected, (state, action) => {
         state.isAuthenticated = false;
+        state.authInitialized = true;
         state.error = action.payload;
         (state.status = "failed"), (state.user = null);
       })
@@ -66,11 +71,11 @@ const authSlice = createSlice({
       .addCase(signUpUser.pending, (state) => {
         state.status = "loading";
         state.error = null;
-        state.user = null
+        state.user = null;
       })
       .addCase(signUpUser.fulfilled, (state, action) => {
         state.status = "success";
-        state.error =null;
+        state.error = null;
         state.user = action.payload;
       })
       .addCase(signUpUser.rejected, (state, action) => {

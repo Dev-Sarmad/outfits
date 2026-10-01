@@ -130,4 +130,12 @@ We config the name of the api, baseUrl and the endpoints asscocitated with it.
 
 The slice is created now connect it with the redux store. Register the baseApi in the store and rtk middleware which acts a delivery truck to dispatch the network requests, check the cache expiry,refetch or is it a component making request data is already cached or not ?
 
-Now inject the specific endpoints for orders, products etc in a seprate feature api file. 
+Now inject the specific endpoints for orders, products etc in a seprate feature api file.
+
+Seprated the admin related stuff inside the application because admin have diffrent functionalities so have to divide our app to a normal users and the admin access stuff.
+
+Created a seprate folder for the admin in which the stuff like dashboard stats, admin routes pages and crud of the products as of now are managed.
+
+The adminRoute is a protected route component which is responsible that only role as admin can access this route. If it matched admin can route anywhere in the children route match, and adminLayout outlet allow us to render current admin page inside it. 
+
+Whenever react sees /admin index:true it renders that component/page first 

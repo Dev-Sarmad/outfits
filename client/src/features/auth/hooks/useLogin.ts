@@ -24,9 +24,10 @@ const useLogin = () => {
   const dispatch = useDispatch<AppDispatch>();
   const handleLogin = async (data: loginFormData) => {
     try {
-      await dispatch(loginUser(data)).unwrap();
+      const user = await dispatch(loginUser(data)).unwrap();
+
       reset();
-      navigate("/");
+      navigate(user.role === "admin" ? "/admin" : "/");
     } catch (error) {
       console.log(error);
     }

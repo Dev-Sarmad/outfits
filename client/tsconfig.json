@@ -23,6 +23,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "theme-switch.tsx"],
+  "include": ["src", "theme-switch.tsx", "../components"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -4,26 +4,6 @@ import { Link } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 export default function LoginForm() {
   const { handleLogin, handleSubmit, errors, register, status } = useLogin();
-  // const {
-  //   register,
-  //   reset,
-  //   formState: { errors },
-  //   handleSubmit,
-  // } = useForm<loginFormData>({
-  //   resolver: zodResolver(loginSchema),
-  // });
-
-  // const navigate = useNavigate();
-  // const dispatch = useDispatch<AppDispatch>();
-  // const handleLogin = async (data: loginFormData) => {
-  //   try {
-  //     await dispatch(loginUser(data));
-  //     reset();
-  //     navigate("/");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">

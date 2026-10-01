@@ -20,11 +20,10 @@ export const LoginApi = async (credentials: loginFormData): Promise<User> => {
     credentials,
     { withCredentials: true },
   );
-  const data = response.data;
-  
-  return data;
+
+  return response.data.data.safeUser;
 };
-export const signUpApi = async (credentials: SignUpPayload):Promise<User> => {
+export const signUpApi = async (credentials: SignUpPayload): Promise<User> => {
   const { data } = await axios.post<User>(
     "http://localhost:8000/api/auth/register",
     credentials,
@@ -32,12 +31,12 @@ export const signUpApi = async (credentials: SignUpPayload):Promise<User> => {
 
   return data;
 };
-export const authCheckApi = async () => {
+export const authCheckApi = async (): Promise<User> => {
   const authCheck = await axios.get("http://localhost:8000/api/auth/me", {
     withCredentials: true,
   });
 
-  return authCheck.data;
+  return authCheck.data.data;
 };
 export const logoutApi = async () => {
   await axios.post("http://localhost:8000/api/auth/logout", null, {
